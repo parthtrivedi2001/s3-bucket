@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Nested stack file that creates the resources for load balancer, EC2, RDS, and custom VPC.
+
+Resources:
+  CustomVPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://bucket123-45.s3.amazonaws.com/customvpc.txt 
+      
+  EC2Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://bucket123-45.s3.amazonaws.com/ec22.txt
+    DependsOn: CustomVPCStack
+      
+  RDSStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://bucket123-45.s3.amazonaws.com/rds.txt 
+    DependsOn: CustomVPCStack
+      
+  LoadBalancerStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://bucket123-45.s3.amazonaws.com/load-balancer.txt
+    DependsOn: EC2Stack
